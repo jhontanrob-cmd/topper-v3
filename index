@@ -2,246 +2,108 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Configuración para que parezca App nativa -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>POS Pro</title>
-
-<!-- Fuente Google e Iconos -->
+<title>POS GitHub Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<!-- SweetAlert2 para alertas bonitas -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-:root {
-  --primary: #2563eb;
-  --primary-dark: #1e40af;
-  --bg: #f3f4f6;
-  --card: #ffffff;
-  --text: #1f2937;
-  --green: #10b981;
-}
-
+/* --- ESTILOS IDÉNTICOS A LA VERSIÓN ANTERIOR --- */
+:root { --primary: #2563eb; --primary-dark: #1e40af; --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --green: #10b981; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding-bottom: 140px; /* Espacio para el footer fijo */
-}
-
-/* HEADER */
-header {
-  background: var(--card);
-  padding: 20px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 140px; }
+header { background: var(--card); padding: 20px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; }
 header h1 { margin: 0; font-size: 1.2rem; color: var(--primary-dark); }
 .badge { background: var(--primary); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
-
-/* GRID PRODUCTOS */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-  padding: 20px;
-}
-
-.card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: transform 0.1s;
-  height: 100%;
-}
-.card:active { transform: scale(0.98); }
-
-.img-placeholder {
-  width: 100%;
-  height: 100px;
-  background: #e5e7eb;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-  font-size: 2rem;
-  overflow: hidden;
-}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
+.card { background: var(--card); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); height: 100%; }
+.img-placeholder { width: 100%; height: 100px; background: #e5e7eb; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 2rem; overflow: hidden; }
 .img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
-
 .prod-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 5px; line-height: 1.2; }
 .prod-price { color: var(--green); font-weight: 800; font-size: 1.1rem; }
-
-/* CONTROLES CANTIDAD EN TARJETA */
-.controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  background: #f9fafb;
-  border-radius: 8px;
-  padding: 4px;
-}
-.btn-mini {
-  width: 30px; height: 30px;
-  border: none; background: white;
-  border-radius: 6px;
-  font-weight: bold; color: var(--primary);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  font-size: 1.2rem;
-  display: flex; align-items: center; justify-content: center;
-}
+.controls { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; background: #f9fafb; border-radius: 8px; padding: 4px; }
+.btn-mini { width: 30px; height: 30px; border: none; background: white; border-radius: 6px; font-weight: bold; color: var(--primary); box-shadow: 0 1px 2px rgba(0,0,0,0.1); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
 .qty-display { font-weight: bold; font-size: 1rem; width: 30px; text-align: center;}
-
-/* FOOTER FLOTANTE (TOTAL) */
-.floating-footer {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: var(--text);
-  color: white;
-  border-radius: 20px;
-  padding: 15px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  z-index: 100;
-  cursor: pointer;
-  transform: translateY(150%);
-  transition: transform 0.3s ease-out;
-}
+.floating-footer { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--text); color: white; border-radius: 20px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 100; cursor: pointer; transform: translateY(150%); transition: transform 0.3s ease-out; }
 .floating-footer.visible { transform: translateY(0); }
-
-.total-label { font-size: 0.9rem; opacity: 0.8; }
 .total-amount { font-size: 1.5rem; font-weight: 800; }
-.btn-pay {
-  background: var(--green);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-/* MODAL DE PAGO */
-.modal-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 200;
-  display: none;
-  align-items: flex-end; /* Sheet style */
-}
+.btn-pay { background: var(--green); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 600; font-size: 1rem; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; }
 .modal-overlay.open { display: flex; }
-
-.modal-content {
-  background: white;
-  width: 100%;
-  border-radius: 25px 25px 0 0;
-  padding: 30px;
-  animation: slideUp 0.3s;
-}
-
+.modal-content { background: white; width: 100%; border-radius: 25px 25px 0 0; padding: 30px; animation: slideUp 0.3s; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-.modal-header { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; }
-
 .form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #666; }
-.form-control {
-  width: 100%; padding: 15px; border: 2px solid #e5e7eb;
-  border-radius: 12px; font-size: 1.1rem; outline: none;
-}
-.form-control:focus { border-color: var(--primary); }
-
-.btn-block {
-  width: 100%; padding: 18px; border: none; border-radius: 15px;
-  font-size: 1.2rem; font-weight: bold; cursor: pointer;
-}
+.form-control { width: 100%; padding: 15px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1.1rem; outline: none; display: block; }
+.btn-block { width: 100%; padding: 18px; border: none; border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
 .btn-confirm { background: var(--primary); color: white; margin-bottom: 10px;}
 .btn-cancel { background: transparent; color: #888; }
-
-/* LOADING SPINNER */
 #loader { text-align: center; padding: 40px; color: #888; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1><i class="fas fa-cash-register"></i> Punto de Venta</h1>
+  <h1><i class="fas fa-cash-register"></i> Mi Tienda</h1>
   <div class="badge" id="item-count">0 items</div>
 </header>
 
-<div id="loader"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Cargando productos...</div>
+<div id="loader"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Conectando con Google...</div>
 <div class="grid" id="product-grid"></div>
 
-<!-- FOOTER FLOTANTE -->
 <div class="floating-footer" id="footer" onclick="abrirPagar()">
   <div>
-    <div class="total-label">Total a Pagar</div>
+    <div style="font-size:0.9rem; opacity:0.8">Total a Pagar</div>
     <div class="total-amount" id="total-display">S/ 0.00</div>
   </div>
   <button class="btn-pay">COBRAR <i class="fas fa-arrow-right"></i></button>
 </div>
 
-<!-- MODAL DE PAGO -->
 <div class="modal-overlay" id="modal-pago">
   <div class="modal-content">
-    <div class="modal-header">Confirmar Venta</div>
-    
+    <h2 style="margin-top:0">Confirmar Venta</h2>
     <div class="form-group">
-      <label>Método de Pago</label>
       <select id="metodo" class="form-control" onchange="togglePago()">
         <option value="Efectivo">Efectivo</option>
         <option value="Yape">Yape / Plin</option>
         <option value="Tarjeta">Tarjeta</option>
       </select>
     </div>
-
     <div class="form-group" id="grupo-pago">
-      <label>Monto Recibido</label>
-      <input type="number" id="pago-cliente" class="form-control" placeholder="0.00" oninput="calcularVuelto()">
+      <input type="number" id="pago-cliente" class="form-control" placeholder="Monto recibido" oninput="calcularVuelto()">
     </div>
-
     <div class="form-group" id="grupo-vuelto">
-      <label>Vuelto</label>
-      <input type="text" id="vuelto" class="form-control" readonly style="background:#f3f4f6; color: var(--green); font-weight:bold;">
+      <input type="text" id="vuelto" class="form-control" readonly style="background:#f3f4f6; color: var(--green); font-weight:bold;" placeholder="Vuelto">
     </div>
-
     <button class="btn-block btn-confirm" id="btn-finalizar" onclick="procesarVenta()">CONFIRMAR (S/ <span id="modal-total">0</span>)</button>
     <button class="btn-block btn-cancel" onclick="cerrarPagar()">Cancelar</button>
   </div>
 </div>
 
 <script>
-// --- ESTADO DE LA APP ---
-let productos = [];
-let carrito = {}; // { "NombreProd": { precio: 10, cantidad: 2 } }
+// ==========================================
+// CONFIGURACIÓN: ¡PEGA TU URL DE APPS SCRIPT AQUÍ!
+// ==========================================
+const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUENfSnmZJHONcLyoHjOiOppzoDHAnPTDCDD4FP6Jv59MMdkEQsh8ekJG2C0EfZcI5ZTUKQoa7i_ewbk0uStPi3UQ4VdUYnqvCCcB0qru0nWeGW_uEG_4sxvzKoK48zc25QeWQHPIRTjC11lr5MYNoara67ic8r3shRsDbgQPAL5FTpzTLUe5md5NICHOJsGa9GiCNlz3d6l4TtfOcG_LvomrRVGg3bXvGBEDDAUoJYomASwDHRLPnAZc1M8lDAfNBGxLZ-vaEqpRQITuiUeQnf4Sxvpm9pK30qnQJ&lib=MAeODvDheANvgEY2yzXNzIVKOlH7Us0IG"; 
 
-// --- INICIALIZACIÓN ---
+let productos = [];
+let carrito = {};
+
+// 1. CARGAR PRODUCTOS AL INICIO
 window.onload = function() {
-  google.script.run
-    .withSuccessHandler(cargarProductos)
-    .getProductos();
+  fetch(API_URL + "?action=getProductos")
+    .then(response => response.json())
+    .then(res => {
+      if(res.status === 'success'){
+        cargarProductos(res.data);
+      } else {
+        alert("Error cargando productos");
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById('loader').innerHTML = "Error de conexión. Verifica la URL.";
+    });
 };
 
 function cargarProductos(data) {
@@ -250,9 +112,7 @@ function cargarProductos(data) {
   const grid = document.getElementById('product-grid');
   
   productos.forEach((p, index) => {
-    // Si hay URL de imagen, usarla, si no icono por defecto
     let imgHtml = p.img ? `<img src="${p.img}" alt="${p.nombre}">` : `<i class="fas fa-box"></i>`;
-    
     let html = `
       <div class="card">
         <div class="img-placeholder">${imgHtml}</div>
@@ -265,155 +125,120 @@ function cargarProductos(data) {
           <span class="qty-display" id="qty-${index}">0</span>
           <button class="btn-mini" onclick="updateCart('${p.nombre}', ${p.precio}, 1)">+</button>
         </div>
-      </div>
-    `;
+      </div>`;
     grid.innerHTML += html;
   });
 }
 
-// --- LÓGICA DEL CARRITO ---
 function updateCart(nombre, precio, delta) {
   if (!carrito[nombre]) carrito[nombre] = { precio: precio, cantidad: 0 };
-  
   carrito[nombre].cantidad += delta;
   if (carrito[nombre].cantidad < 0) carrito[nombre].cantidad = 0;
   
-  // Actualizar UI de la tarjeta específica
   let index = productos.findIndex(p => p.nombre === nombre);
   if(index >= 0) document.getElementById(`qty-${index}`).textContent = carrito[nombre].cantidad;
-
   calcularTotales();
 }
 
 function calcularTotales() {
   let total = 0;
   let itemsCount = 0;
-  
   for (let key in carrito) {
     if (carrito[key].cantidad > 0) {
       total += carrito[key].cantidad * carrito[key].precio;
       itemsCount += carrito[key].cantidad;
     }
   }
-
-  // Actualizar Footer
   document.getElementById('total-display').textContent = "S/ " + total.toFixed(2);
   document.getElementById('modal-total').textContent = total.toFixed(2);
   document.getElementById('item-count').textContent = itemsCount + " items";
-
-  const footer = document.getElementById('footer');
-  if (total > 0) footer.classList.add('visible');
-  else footer.classList.remove('visible');
   
+  const footer = document.getElementById('footer');
+  if (total > 0) footer.classList.add('visible'); else footer.classList.remove('visible');
   return total;
 }
 
-// --- MODAL Y PAGOS ---
-function abrirPagar() {
-  document.getElementById('modal-pago').classList.add('open');
-  document.getElementById('pago-cliente').value = '';
-  document.getElementById('vuelto').value = '';
-  togglePago(); // Resetear estado campos
-}
-
-function cerrarPagar() {
-  document.getElementById('modal-pago').classList.remove('open');
-}
+// --- MODAL ---
+function abrirPagar() { document.getElementById('modal-pago').classList.add('open'); togglePago(); }
+function cerrarPagar() { document.getElementById('modal-pago').classList.remove('open'); }
 
 function togglePago() {
   let metodo = document.getElementById('metodo').value;
   let esEfectivo = metodo === 'Efectivo';
-  
   document.getElementById('grupo-pago').style.display = esEfectivo ? 'block' : 'none';
   document.getElementById('grupo-vuelto').style.display = esEfectivo ? 'block' : 'none';
-  
-  if(!esEfectivo) {
-    document.getElementById('vuelto').value = "---";
-  }
 }
 
 function calcularVuelto() {
   let total = calcularTotales();
-  let pago = parseFloat(document.getElementById('pago-cliente').value);
-  if (isNaN(pago)) pago = 0;
-  
+  let pago = parseFloat(document.getElementById('pago-cliente').value) || 0;
   let vuelto = pago - total;
   let inputVuelto = document.getElementById('vuelto');
-  
-  if(vuelto < 0) {
-    inputVuelto.value = "Falta dinero";
-    inputVuelto.style.color = "red";
-  } else {
-    inputVuelto.value = "S/ " + vuelto.toFixed(2);
-    inputVuelto.style.color = "var(--green)";
-  }
+  inputVuelto.value = vuelto < 0 ? "Falta dinero" : "S/ " + vuelto.toFixed(2);
+  inputVuelto.style.color = vuelto < 0 ? "red" : "var(--green)";
 }
 
-// --- ENVIAR AL BACKEND ---
+// --- ENVIAR A GOOGLE SHEETS DESDE GITHUB ---
 function procesarVenta() {
   let btn = document.getElementById('btn-finalizar');
   let total = calcularTotales();
   let metodo = document.getElementById('metodo').value;
-  
-  // Validación básica
+
   if (metodo === 'Efectivo') {
     let pago = parseFloat(document.getElementById('pago-cliente').value);
-    if (!pago || pago < total) {
-      Swal.fire('Error', 'El pago es insuficiente', 'error');
-      return;
-    }
+    if (!pago || pago < total) return Swal.fire('Error', 'Pago insuficiente', 'error');
   }
 
-  // Preparar datos
-  btn.innerText = "Registrando...";
+  btn.innerText = "Enviando...";
   btn.disabled = true;
 
   let itemsVendidos = [];
   for (let key in carrito) {
     if (carrito[key].cantidad > 0) {
       itemsVendidos.push({
-        nombre: key,
-        cantidad: carrito[key].cantidad,
-        precio: carrito[key].precio,
-        total: carrito[key].cantidad * carrito[key].precio
+        nombre: key, cantidad: carrito[key].cantidad, 
+        precio: carrito[key].precio, total: carrito[key].cantidad * carrito[key].precio
       });
     }
   }
 
-  let orden = {
-    items: itemsVendidos,
-    totalGlobal: total,
-    metodo: metodo
+  // Estructura de datos para enviar
+  let payload = {
+    action: "registrarVenta",
+    orden: { items: itemsVendidos, totalGlobal: total, metodo: metodo }
   };
 
-  google.script.run
-    .withSuccessHandler(function(res) {
+  // Usamos fetch con POST y 'text/plain' para evitar problemas de CORS preflight en GAS
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  })
+  .then(response => response.json())
+  .then(res => {
+    if(res.status === 'success'){
       cerrarPagar();
-      Swal.fire({
-        title: '¡Venta Registrada!',
-        text: 'Se guardó correctamente en Sheets',
-        icon: 'success',
-        timer: 2000,
-        showConfirmButton: false
-      });
+      Swal.fire({ title: '¡Venta Registrada!', icon: 'success', timer: 2000, showConfirmButton: false });
       resetApp();
-    })
-    .withFailureHandler(function(err){
-      Swal.fire('Error', 'Algo falló: ' + err, 'error');
-      btn.disabled = false;
-      btn.innerText = "CONFIRMAR";
-    })
-    .registrarVentaBatch(orden);
+    } else {
+      throw new Error(res.message);
+    }
+  })
+  .catch(err => {
+    Swal.fire('Error', 'No se pudo registrar: ' + err, 'error');
+    btn.disabled = false;
+    btn.innerText = "CONFIRMAR";
+  });
 }
 
 function resetApp() {
   carrito = {};
   document.querySelectorAll('.qty-display').forEach(el => el.textContent = '0');
   calcularTotales();
+  document.getElementById('pago-cliente').value = '';
+  document.getElementById('vuelto').value = '';
   document.getElementById('btn-finalizar').disabled = false;
   document.getElementById('btn-finalizar').innerHTML = 'CONFIRMAR (S/ <span id="modal-total">0</span>)';
 }
 </script>
-
 </body>
 </html>
